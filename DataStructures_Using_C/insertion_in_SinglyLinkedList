@@ -1,0 +1,143 @@
+//This C program is for insertion of node in a linked list via 3 methods i.e at first,at last,at given position
+#include<stdio.h>
+#include<stdlib.h> //because we will be using dynamic memory allocation via malloc and exit function
+
+//defining structure for node
+struct node
+{
+    int data; //it will hold value of node
+    struct node *next;  //it will hold pointer to next node
+};
+
+//global declaration and definition of head pointer
+struct node *head=NULL;
+
+//insert function for inserting a node at first
+void insertAtFirst(int value)
+{
+    struct node *new;
+    new=(struct node *)malloc(sizeof(struct node));
+    new->data=value;
+    new->next=NULL;
+    if(head==NULL)  //if node is first node of list
+        head=new;
+    else  //if node is not first node of a list
+    {
+       new->next=head;
+       head=new;
+    }
+
+}
+
+//insert function for inserting a node at last
+void insertAtLast(int value)
+{
+    struct node *new,*ptr;
+    new=(struct node *)malloc(sizeof(struct node));
+    new->data=value;
+    new->next=NULL;
+    if(head==NULL) //when list is empty
+        head=new;
+    else
+    {
+        ptr=head;
+        while(ptr->next!=NULL) //this will give pointer to last node
+            ptr=ptr->next;
+        ptr->next=new; //now ptr points to new thus making new node last node of list
+    }
+
+}
+
+//insert function for inserting a node at given position
+void insertAtGivenPos(int value,int position) //position means here that after which node you wanna enter new node like for entering at first enter 0 as position
+{
+    int count=0;
+    struct node *new,*ptr;
+    new=(struct node *)malloc(sizeof(struct node));
+    //first let count the number of nodes
+    ptr=head;
+    while(ptr!=NULL)
+    {
+        ptr=ptr->next;
+        count++;
+    }
+    if(position>count)
+        printf("Position does not exist\n");
+    else
+        {
+            if(position==0) //inserting at first
+            insertAtFirst(value);
+    else if(position==count) //inserting at last
+        insertAtLast(value);
+    else
+        {
+          ptr=head;
+          while(--position)
+            ptr=ptr->next; //ptr will hold the position of node after which new node is to be inserted
+          new->next=ptr->next;
+          ptr->next=new;
+
+        }
+
+}
+
+//printing the list
+void printList()
+{
+    struct node *ptr=head;
+    if(head==NULL)
+        printf("List is empty\n");
+    else
+        {
+            while(ptr!=NULL)
+            {
+                printf("%d\t",ptr->data);
+                ptr=ptr->next;
+            }
+
+        }
+
+}
+
+//main function
+int main()
+{
+    int choice,value,position;
+    while(1)
+    {
+        printf("Enter 1.inserting a node at first 2.inserting a node at last 3.inserting a node at given position 4.printing list 5.Exit\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: scanf("%d",&value);
+                    insertAtFirst(value);
+                    break;
+            case 2:scanf("%d",&value);
+                   insertAtLast(value);
+                   break;
+            case 3:printf("enter value\n");
+                   scanf("%d",&value);
+                   printf("enter position\n");
+                   scanf("%d",&position);
+                   insertAtGivenPos(value,--position);//because inserting at n position means insertion after n-1 position
+                   break;
+            case 4: printList();
+            break;
+            case 5:exit(0);
+            break;
+            default:printf("Invalid entry\n");
+        }
+
+
+
+    }
+}
+
+
+
+
+
+
+
+
+
